@@ -16,14 +16,19 @@ const cors = require("cors");
  */
 
 const server = express();
+const userRouter = require('./users/users-router')
+const authRouter = require('./auth/auth-router')
 
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
 
-server.get("/", (req, res) => {
-  res.json({ api: "up" });
-});
+server.use('/api/users', userRouter)
+server.use('/api/auth', authRouter)
+
+// server.get("/", (req, res) => {
+//   res.json({ api: "up" });
+// });
 
 server.use((err, req, res, next) => { // eslint-disable-line
   res.status(err.status || 500).json({
