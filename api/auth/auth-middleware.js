@@ -8,7 +8,11 @@ const User = require('../users/users-model')
   }
 */
 function restricted(req, res, next) {
-  next()
+  if(req.session.user){
+    next()
+  } else {
+    next({status: 401, message: 'You shall not pass!'})
+  }
 }
 
 /*
@@ -51,6 +55,7 @@ async function checkUsernameExists(req, res, next) {
         username: req.body.username
       })
     if(user.length){
+      req.user = user[0]
       next()
     }
     else {
